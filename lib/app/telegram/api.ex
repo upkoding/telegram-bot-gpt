@@ -1,4 +1,4 @@
-defmodule App.TelegramApiBehaviour do
+defmodule App.Telegram.ApiBehaviour do
   @moduledoc """
   Behaviour that represents Telegram.Api module.
   """
@@ -11,8 +11,8 @@ defmodule App.TelegramApiBehaviour do
   @callback file(Telegram.Types.token(), String.t()) :: Telegram.Api.request_result()
 end
 
-defmodule App.TelegramApi do
-  @behaviour App.TelegramApiBehaviour
+defmodule App.Telegram.Api do
+  @behaviour App.Telegram.ApiBehaviour
 
   defdelegate request(token, method, params \\ []), to: Telegram.Api
   defdelegate file(token, path), to: Telegram.Api

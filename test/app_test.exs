@@ -2,7 +2,7 @@ defmodule AppTest do
   use ExUnit.Case
   doctest App
 
-  test "telegram_api" do
-    assert App.telegram_api() == TelegramApiMock
+  test "telegram" do
+    assert App.telegram() == TelegramApiMock
   end
 end

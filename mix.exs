@@ -25,6 +25,7 @@ defmodule App.MixProject do
       {:telegram, github: "visciang/telegram", tag: "1.1.1"},
       {:hackney, "~> 1.18"},
       {:plug_cowboy, "~> 2.5"},
+      {:openai_ex, "~> 0.4.2"},
       {:mox, "~> 1.0", only: :test}
     ]
   end
