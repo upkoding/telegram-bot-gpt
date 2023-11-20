@@ -14,3 +14,7 @@ config :app, App.Telegram.Bot,
 config :app, OpenAI,
   token: System.get_env("OPENAI_API_KEY"),
   organization: System.get_env("OPENAI_ORG", nil)
+
+config :app,
+  bot_username: System.get_env("BOT_USERNAME"),
+  bot_admin_username: System.get_env("BOT_ADMIN_USERNAME")
