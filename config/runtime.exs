@@ -5,7 +5,7 @@ import Config
 config :app, App.Telegram.Webhook,
   host: System.get_env("BOT_HOST"),
   port: System.get_env("PORT", "443") |> String.to_integer(),
-  local_port: System.get_env("PORT", "8443") |> String.to_integer()
+  local_port: System.get_env("LOCAL_PORT", "8443") |> String.to_integer()
 
 config :app, App.Telegram.Bot,
   token: System.get_env("BOT_TOKEN"),
