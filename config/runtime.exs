@@ -17,4 +17,5 @@ config :app, OpenAI,
 
 config :app,
   bot_username: System.get_env("BOT_USERNAME"),
-  bot_admin_username: System.get_env("BOT_ADMIN_USERNAME")
+  bot_admin_username: System.get_env("BOT_ADMIN_USERNAME"),
+  bot_admin_chatid: System.get_env("BOT_ADMIN_CHAT_ID") |> String.to_integer()
