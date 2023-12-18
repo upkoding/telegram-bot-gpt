@@ -100,31 +100,74 @@ defmodule App.Telegram.ChatBot do
 
   @impl true
   def handle_update(
-        %{"message" => %{"chat" => %{"type" => "group"}, "text" => "/start"}},
-        _token,
+        %{"message" => %{"chat" => %{"type" => "group"}}} = message,
+        token,
         state
       ) do
-    # Ignore /start command in group.
-    {:stop, state}
+    handle_group_update(message, token, state)
   end
 
   @impl true
   def handle_update(
-        %{
-          "message" => %{
-            "chat" => %{"id" => chat_id, "type" => "group"},
-            "message_id" => message_id,
-            "reply_to_message" => %{
-              "message_id" => reply_to_message_id,
-              "text" => reply_to_text
-            },
-            "from" => %{"username" => replying_username},
-            "text" => replying_text
-          }
-        },
+        %{"message" => %{"chat" => %{"type" => "supergroup"}}} = message,
         token,
-        {chat, counter, type}
+        state
       ) do
+    handle_group_update(message, token, state)
+  end
+
+  def handle_update(_update, _token, state) do
+    # ignore unknown updates
+
+    {:ok, state, @session_ttl}
+  end
+
+  @impl true
+  def handle_info(_msg, _token, _chat_id, state) do
+    # direct message processing
+
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_timeout(token, chat_id, {chat, _counter, type} = state) do
+    # say goodby on private chat when timeout.
+    if type == "private" do
+      chat
+      |> Chat.reply(
+        {token, chat_id, nil},
+        "Karena tidak ada yang ditanyakan lagi, saya permisi dulu. sampai jumpa!👋"
+      )
+    end
+
+    {:stop, state}
+  end
+
+  defp handle_group_update(
+         %{"message" => %{"text" => "/start"}},
+         _token,
+         state
+       ) do
+    # Ignore /start command in group.
+    {:stop, state}
+  end
+
+  defp handle_group_update(
+         %{
+           "message" => %{
+             "chat" => %{"id" => chat_id},
+             "message_id" => message_id,
+             "reply_to_message" => %{
+               "message_id" => reply_to_message_id,
+               "text" => reply_to_text
+             },
+             "from" => %{"username" => replying_username},
+             "text" => replying_text
+           }
+         },
+         token,
+         {chat, counter, type}
+       ) do
     new_counter = counter + 1
     # Handle Group chat update. We treat them as a one-off message (stateless).
     # Rules:
@@ -158,32 +201,5 @@ defmodule App.Telegram.ChatBot do
       end
 
     {:ok, {chat, new_counter, type}, @session_ttl}
-  end
-
-  def handle_update(_update, _token, state) do
-    # ignore unknown updates
-
-    {:ok, state, @session_ttl}
-  end
-
-  @impl true
-  def handle_info(_msg, _token, _chat_id, state) do
-    # direct message processing
-
-    {:ok, state}
-  end
-
-  @impl true
-  def handle_timeout(token, chat_id, {chat, _counter, type} = state) do
-    # say goodby on private chat when timeout.
-    if type == "private" do
-      chat
-      |> Chat.reply(
-        {token, chat_id, nil},
-        "Karena tidak ada yang ditanyakan lagi, saya permisi dulu. sampai jumpa!👋"
-      )
-    end
-
-    {:stop, state}
   end
 end
