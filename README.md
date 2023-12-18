@@ -1,6 +1,11 @@
-# telegram-bot
+# telegram-bot-gpt
 
-A starting point to create your own Telegram bot with Elixir.
+Dibuat untuk memberikan sedikit sentuhan AI kepada Group Telegram UpKoding. Dengan bot ini saya (admin) bisa memerintahkan bot untuk membantu menjawab pertanyaan anggota apabila kebetulan saya tidak memiliki kompetensi di bidang yang ditanyakan.
+
+Anggota group juga bisa berinteraksi langsung dengan bot secara privat, hampir sama seperti chatting dengan ChatGPT tetapi dengan bot telegram.
+
+
+> Powered by [https://github.com/ekaputra07/telegram-bot](https://github.com/ekaputra07/telegram-bot) a starting point to create your own Telegram bot with Elixir.
 
 ### 👉 Development
 
